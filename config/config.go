@@ -8,10 +8,7 @@ import (
 )
 
 func ConnectDB() *gorm.DB {
-	errorENV := godotenv.Load()
-	if errorENV != nil {
-		panic("Failed to load env file")
-	}
+	_ = godotenv.Load()
 
 	dbURL := os.Getenv("DB_URL")
 
