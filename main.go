@@ -1,15 +1,22 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"gin/config"
+	"gin/models"
+	"gin/routes"
 )
-var Router * gin.Engine
+
+var (
+	db = config.ConnectDB()
+)
+
 func main() {
-	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello world!",
-		})
-	})
-	r.Run()
+	err := db.AutoMigrate(&models.Todo{})
+	if err != nil {
+		return
+	}
+
+	defer config.DisconnectDB(db)
+
+	routes.Routes()
 }
